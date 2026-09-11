@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เปรียบเทียบแพ็กเกจ — Tabi เที่ยวญี่ปุ่น</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="brand">旅 <span>Tabi</span> — เที่ยวญี่ปุ่น</a>
+  <div class="topnav">
+    <a href="index.html">1. เข้าสู่ระบบ</a>
+    <a href="select.html">2. เลือกทริป</a>
+    <a href="detail.html">3. รายละเอียด</a>
+    <a href="package.html" class="on">4. แพ็กเกจ</a>
+  </div>
+</div>
+
+<div class="page" id="page-package">
+  <div class="pkg-hero reveal">
+    <img id="pkgHeroImg" alt="ออนเซ็นเรียวกันวิวภูเขา">
+    <div class="pkg-hero-text">
+      <h2>เลือกระดับทริปที่ใช่สำหรับคุณ</h2>
+      <p>ทุกแพ็กเกจรวมที่พัก การเดินทาง และซัพพอร์ตตลอดทริปไว้ให้แล้ว</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <svg class="bg-decor" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#c9a887" stroke-width="2" fill="none">
+        <path d="M190,10 C160,30 140,60 120,90 C100,120 80,140 50,160"/>
+        <path d="M120,90 C110,70 100,60 85,55"/>
+        <path d="M100,120 C90,105 78,98 65,96"/>
+      </g>
+      <g fill="#bf3b3b">
+        <circle cx="85" cy="55" r="4"/><circle cx="65" cy="96" r="4"/>
+        <circle cx="50" cy="160" r="5"/><circle cx="120" cy="90" r="4"/><circle cx="190" cy="10" r="4"/>
+      </g>
+    </svg>
+    <a href="#" id="backToDetail" class="back-link reveal">← กลับไปดูรายละเอียดทริป</a>
+    <div class="pkg-grid" id="pkgGrid"></div>
+  </div>
+  <footer>Tabi · วางแผนทริปญี่ปุ่นอย่างมั่นใจ</footer>
+</div>
+
+<script src="data.js"></script>
+<script src="common.js"></script>
+<script>
+document.getElementById('pkgHeroImg').src = IMG.onsenRyokan;
+
+const t=getParam('t');
+document.getElementById('backToDetail').href = t ? ('detail.html?t='+t) : 'detail.html';
+
+const pkgGrid=document.getElementById('pkgGrid');
+packages.forEach(p=>{
+  const el=document.createElement('div');
+  el.className='pkg-card'+(p.featured?' featured':'');
+  const featBadge=p.featured?'<div class="ribbon pkg-ribbon">แนะนำ</div>':'';
+  el.innerHTML=`
+    ${featBadge}
+    <div class="pkg-ic">${p.ic}</div>
+    <div class="pkg-name">แพ็กเกจ</div>
+    <h3>${p.name}</h3>
+    <div class="pkg-price">฿${p.price.toLocaleString()}<small> / คน</small></div>
+    <div class="pkg-note">${p.note}</div>
+    <ul class="pkg-feats">
+      ${p.feats.map(f=>`<li><span class="${f.y?'yes':'no'}">${f.y?'✓':'—'}</span>${f.t}</li>`).join('')}
+    </ul>
+    <button class="pkg-cta">เลือกแพ็กเกจ${p.name}</button>
+  `;
+  pkgGrid.appendChild(el);
+});
+
+runReveal();
+popInStagger('#pkgGrid .pkg-card', 120);
+</script>
+</body>
+</html>
